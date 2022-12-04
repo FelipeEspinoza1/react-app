@@ -1,0 +1,11 @@
+{
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact",
+        "jsx-sublime-babel-tags": "javascriptreact"
+      },
+    
+    //Esta linea es muy útil, nos permite usar emmet con componentes que no sean HTML.
+    //Por ejemplo un componente de react que escribamos llamado Layout, al darle tab
+    //nos lo mostrará como <Layout></Layout>
+      "emmet.triggerExpansionOnTab": true,
+}

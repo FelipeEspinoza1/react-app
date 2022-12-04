@@ -15,6 +15,7 @@ import Rechazado from "../components/rechazado";
 import NavbarProf from "../profesionales/navbar/navbar"
 import Agendar from "../profesionales/components/agendar"
 import Citas from "../profesionales/components/citas"
+import Stats from "../profesionales/components/stats"
 
 import {ProtectedRoute} from "../profesionales/ProtectedRoute"
 
@@ -39,6 +40,7 @@ function App() {
                   <Route path="/prof" element={<NavbarProf />}>
                     <Route path="/prof/ver_citas" element={ <Citas />}/> 
                     <Route path="/prof/agendar" element={ <Agendar />}/>
+                    <Route path="/prof/stats" element={ <Stats /> }></Route>
                     <Route path="*" element={<Navigate replace to="/prof"/>}/>
                   </Route>
                 </Route>

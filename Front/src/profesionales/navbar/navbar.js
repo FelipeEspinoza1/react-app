@@ -59,7 +59,8 @@ function NavbarProf() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav">
           <Nav>
-            <Nav.Link className="letter" as={Link} to="/prof/ver_citas">Ver Citas</Nav.Link>
+            <Nav.Link className="letter" as={Link} to="/prof/ver_citas">Ver citas</Nav.Link>
+            <Nav.Link as={Link} to="/prof/stats">Ver stats</Nav.Link>
             <Nav.Link as={Link} to="/prof/agendar">Agendar hora</Nav.Link>
             <Nav.Item as={Link} to="/inicio">
               <Button className="agenda-button" onClick={handleLogout}>Logout</Button>{' '}

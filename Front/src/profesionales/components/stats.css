@@ -1,0 +1,30 @@
+.title {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    font-size: 30px;
+}
+
+.subtitle {
+    margin-top: 30px;
+    margin-left: 20px;
+    margin-bottom: 30px;
+    font-size: 20px;
+}
+
+.row-content {
+    align-items: center;
+    text-align: center;
+}
+
+.row-content:last-child {
+    margin-top: 50px;
+}
+
+.stats-citas {
+    font-size: 45px;
+}
+
+.chart-card {
+    margin: 0 20px;
+}
