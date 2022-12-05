@@ -23,27 +23,29 @@ export default class Torta extends PureComponent {
         const { data } = this.props;
 
         return (
-            <ResponsiveContainer width="100%" aspect={2}>
-                <PieChart width={400} height={400}>
-                    <Pie
-                        data={data}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        label={renderCustomizedLabel}
-                        outerRadius={150}
-                        fill="#8884d8"
-                        dataKey="value"
-                    >
-                        {data.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                    </Pie>
-                <Legend payload={data.name}>
+            <div style={{width: '100%', height: 400}}>
+                <ResponsiveContainer>
+                    <PieChart width={400} height={400}>
+                        <Pie
+                            data={data}
+                            cx="50%"
+                            cy="50%"
+                            labelLine={false}
+                            label={renderCustomizedLabel}
+                            outerRadius={150}
+                            fill="#8884d8"
+                            dataKey="value"
+                        >
+                            {data.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                            ))}
+                        </Pie>
+                        <Legend payload={data.name}>
 
-                </Legend>
-                </PieChart>
-            </ResponsiveContainer>
+                        </Legend>
+                    </PieChart>
+                </ResponsiveContainer>
+            </div>
         );
     }
 }

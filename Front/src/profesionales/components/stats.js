@@ -1,41 +1,69 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
-import { ResponsiveContainer } from 'recharts';
 import "./stats.css";
 import Torta from "./piechart"
+import Barchart from "./barchart"
+import axios from "axios";
 
+const host = process.env.REACT_APP_HOST_BACKEND
 
-const data = [
+const data1 = [
     { name: 'Group A', value: 400 },
     { name: 'Group B', value: 300 },
     { name: 'Group C', value: 300 },
     { name: 'Group D', value: 200 },
 ];
 
+const data2 = [
+    { name: 'Felipe Espinoza', value: 205},
+    { name: 'Bastián Castro', value: 240},
+    { name: 'José Mera', value: 45}
+]
+
 const Stats = () => {
+
+    let [counter_citas, setCounter] = useState([]);
+    let [years, setYears] = useState([]);
+
+    useEffect(() => {
+        axios.get((host + "/api/stats/getCitasCounter"))
+        .then( res => {
+            setCounter(res.data)
+        })
+        .catch(err => console.log(err))
+    }, [])
+
+    useEffect(() => {
+        axios.get((host + "/api/stats/getYears"))
+        .then( res => {
+            setYears(res.data)
+        })
+        .catch(err => console.log(err))
+    }, [])
+
+    console.log(years)
+
     return (
         <Container fluid>
             <Row className='title'>
-                <Col>
-                <strong>Estadísticas anuales</strong>
-                </Col>
+                <p><b>Estadísticas anuales</b></p>
             </Row>
             <Row className='subtitle'>
-                <strong>Estadísticas generales</strong>
+                <p><b>Estadísticas generales</b></p>
             </Row>
             <Row className='row-content'>
-                <h5>Cantidad de citas anuales:</h5>
-                <strong className='stats-citas'>765</strong>
+                <p>Cantidad de citas anuales:</p>
+                <b className='stats-citas'>{counter_citas}</b>
             </Row>
             <Row className='row-content'>
-                <h5>Gráfico de citas por mes</h5>
+                <p>Gráfico de citas por mes</p>
             </Row>
             <Row className='row-content'>
                 <Col>
                     <Card className='chart-card'>
                         <Card.Body>
                             <Card.Title>Tipo de cita</Card.Title>
-                            <Torta data={data}>
+                            <Torta data={data1}>
                             </Torta>
                         </Card.Body>
                     </Card>
@@ -44,20 +72,18 @@ const Stats = () => {
                     <Card className='chart-card'>
                         <Card.Body>
                             <Card.Title>Profesionales agendados</Card.Title>
-                            <Col>
-                                <ResponsiveContainer>
-                                    <strong>xd</strong>
-                                </ResponsiveContainer>
-                            </Col>
-                            <Col>
-                                El más agendado
-                            </Col>
+                            <Row>
+                                <p>El más agendado: <span style={{color: "#82ca9d"}}>Bastián Castro</span></p>
+                            </Row>
+                            <Row>
+                                <Barchart data={data2}></Barchart>
+                            </Row>
                         </Card.Body>
                     </Card>
                 </Col>
             </Row>
             <Row className='subtitle'>
-                <strong>Estadísticas por profesional</strong>
+                <p><b>Estadísticas por profesional</b></p>
             </Row>
         </Container>
     )
