@@ -1,3 +1,4 @@
+import { set } from "mongoose";
 import Cita from "../models/Citas";
 
 export const getTypes = async (_, res) => {
@@ -13,8 +14,17 @@ export const getCitasCounter = async (_, res) => {
 }
 
 export const getYears = async (_, res) => {
+
     const first = await Cita.find().select("fecha");
-    res.json(first)
+    const dates = []
+
+    for (var i=0; i<first.length; ++i) {
+        dates[i] = first[i].fecha;
+    }
+
+    const years = [...new Set(dates.map(x => x.split('/')[2]))].sort()
+
+    res.json({value: years, label: years})
 }
 
 export const getCitasFreq = async (_, res) => {

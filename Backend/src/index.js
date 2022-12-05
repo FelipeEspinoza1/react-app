@@ -1,9 +1,9 @@
 import app from "./app"
 import "./database"
 
-app.listen(5000);
+app.listen(5050);
 
-console.log("server listen on port", 5000);
+console.log("server listen on port", 5050);
 
 // SDK de Mercado Pago
 const mercadopago = require("mercadopago");
