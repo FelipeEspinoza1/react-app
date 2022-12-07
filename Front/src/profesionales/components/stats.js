@@ -23,8 +23,11 @@ const data2 = [
 const Stats = () => {
 
     let [counter_citas, setCounter] = useState([]);
-    let [years, setYears] = useState([]);
+    let [years_options, setYearsOptions] = useState([]);
     let [loadingY, setLoadingY] = useState(true);
+    const [selectedOption, setSelectedOption] = useState({});
+    const [edition, setEdition] = useState(false);
+    const [data3, setData3] = useState([]);
 
     useEffect(() => {
         axios.get((host + "/api/stats/getCitasCounter"))
@@ -37,11 +40,32 @@ const Stats = () => {
     useEffect(() => {
         axios.get((host + "/api/stats/getYears"))
             .then(res => {
-                setYears(res.data)
+                setYearsOptions(res.data)
                 setLoadingY(false);
             })
             .catch(err => console.log(err))
     }, [])
+
+    useEffect(() => {
+        if (selectedOption != "default") {
+            axios.get((host + "/api/stats/getCitasFreq"), { params: { year: selectedOption} })
+                .then(res => {
+                    setData3(res.data)
+                })
+                .catch(err => console.log(err))
+        }
+    }, [])
+
+    const handleChange = (selectedValue) => {
+        selectedValue = selectedValue.target.value;
+        if (selectedValue === "default") {
+            setEdition(false)
+        }
+        else {
+            setEdition(true);
+        }
+        setSelectedOption(selectedValue);
+    }
 
     if (loadingY) {
         return (
@@ -53,56 +77,74 @@ const Stats = () => {
         )
     }
     else {
-        return (
-            <Container fluid>
-                <Row className='title'>
-                    <p><b>Estadísticas anuales</b></p>
-                    <form className="form-year">
-                        <label htmlFor="select-year">Seleccione año:</label>
-                        <select name="years" id="select-year">
-                            {years['value'].map(element => <option key={element} value={element}>{element}</option>)}
-                        </select>
-                    </form>
-                </Row>
-                <Row className='subtitle'>
-                    <p><b>Estadísticas generales</b></p>
-                </Row>
-                <Row className='row-content'>
-                    <p>Cantidad de citas anuales:</p>
-                    <b className='stats-citas'>{counter_citas}</b>
-                </Row>
-                <Row className='row-content'>
-                    <p>Gráfico de citas por mes</p>
-                </Row>
-                <Row className='row-content'>
-                    <Col>
-                        <Card className='chart-card'>
-                            <Card.Body>
-                                <Card.Title>Tipo de cita</Card.Title>
-                                <Torta data={data1}>
-                                </Torta>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col>
-                        <Card className='chart-card'>
-                            <Card.Body>
-                                <Card.Title>Profesionales agendados</Card.Title>
-                                <Row>
-                                    <p>El más agendado: <span style={{ color: "#82ca9d" }}>Bastián Castro</span></p>
-                                </Row>
-                                <Row>
-                                    <Barchart data={data2}></Barchart>
-                                </Row>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
-                <Row className='subtitle'>
-                    <p><b>Estadísticas por profesional</b></p>
-                </Row>
-            </Container>
-        )
+
+        if (edition & selectedOption.value != "select") {
+            return (
+                <Container fluid>
+                    <Row className='title'>
+                        <p><b>Estadísticas anuales</b></p>
+                        <form className="form-year">
+                            <label htmlFor="select-year">Seleccione año:</label>
+                            <select name="years" id="select-year" value={selectedOption} onChange={handleChange}>
+                                <option id="selected-option" selected value="default">Seleccionar año</option>
+                                {years_options['value'].map(element => <option key={element} value={element}>{element}</option>)}
+                            </select>
+                        </form>
+                        <Row className='subtitle'>
+                            <p><b>Estadísticas generales</b></p>
+                        </Row>
+                        <Row className='row-content'>
+                            <p>Cantidad de citas anuales:</p>
+                            <b className='stats-citas'>{counter_citas}</b>
+                        </Row>
+                        <Row className='row-content'>
+                            <p>Gráfico de citas por mes</p>
+                            <Barchart data={data3}></Barchart>
+                        </Row>
+                        <Row className='row-content'>
+                            <Col>
+                                <Card className='chart-card'>
+                                    <Card.Body>
+                                        <Card.Title>Tipo de cita</Card.Title>
+                                        <Torta data={data1}>
+                                        </Torta>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                            <Col>
+                                <Card className='chart-card'>
+                                    <Card.Body>
+                                        <Card.Title>Profesionales agendados</Card.Title>
+                                        <Row>
+                                            <p>El más agendado: <span style={{ color: "#82ca9d" }}>Bastián Castro</span></p>
+                                        </Row>
+                                        <Row>
+                                            <Barchart data={data2}></Barchart>
+                                        </Row>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        </Row>
+                    </Row>
+                </Container>
+            )
+        }
+        else {
+            return (
+                <Container fluid>
+                    <Row className='title'>
+                        <p><b>Estadísticas anuales</b></p>
+                        <form className="form-year">
+                            <label htmlFor="select-year">Seleccione año:</label>
+                            <select name="years" id="select-year" value={selectedOption} onChange={handleChange}>
+                                <option id="selected-option" selected value="default">Seleccionar año</option>
+                                {years_options['value'].map(element => <option key={element} value={element}>{element}</option>)}
+                            </select>
+                        </form>
+                    </Row>
+                </Container>
+            )
+        }
     }
 
 }
